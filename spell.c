@@ -10,9 +10,10 @@
 
 bool check_word(const char* word, hashmap_t hashtable[])
 {
-	char* lower_case_word = (char *) malloc(strlen(word));
+	char* lower_case_word = (char *)malloc((strlen(word) + 1) * sizeof(char));
+	// char* lower_case_word = (char *) malloc(strlen(word));
 
-	for (int i = 0; i < strlen(word); i++) {
+	for (int i = 0; i < strlen(word) + 1; i++) {
 		lower_case_word[i] = tolower(word[i]);
 	}
 	int hash_value = hash_function(lower_case_word);
@@ -108,14 +109,18 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
 	// part of a string which is longer than that,
 	// I think it is safe to ignore that for now
 	while(fscanf(fp, " %45s", word) == 1) {
-		// printf("1 - Processing word [%s]\n", word);
+		printf("1 - Processing word [%s]\n", word);
 
-		char* lower_case_word = (char *) malloc(strlen(word));
+		char* lower_case_word = (char *) malloc((strlen(word) + 1)*sizeof(char));
 
-		for (int i = 0; i < strlen(word); i++) {
+		if (lower_case_word == NULL) {
+			return false;
+		}
+
+		for (int i = 0; i < (strlen(word) + 1); i++) {
 			lower_case_word[i] = tolower(word[i]);
 		}
-		// printf("2 - Processing word [%s]\n", lower_case_word);
+		printf("2 - Processing word [%s]\n", lower_case_word);
 
 		hash_value = hash_function(lower_case_word);
 
@@ -126,7 +131,9 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
 		if (!is_added) {
 			return false;
 		}
+		free(lower_case_word);
 	}
+
 
 	fclose(fp);
 
