@@ -56,6 +56,7 @@ check_word_suite(void)
     TCase * check_word_case;
     suite = suite_create("check_word");
     check_word_case = tcase_create("Core");
+    tcase_add_test(check_word_case, test_dictionary_normal);
     tcase_add_test(check_word_case, test_check_word_normal);
     tcase_add_test(check_word_case, test_check_words_normal);
     suite_add_tcase(suite, check_word_case);
