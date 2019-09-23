@@ -46,18 +46,6 @@ int check_words(FILE* fp, hashmap_t hashtable[], char * misspelled[])
 	while(fscanf(fp, "%45s", word) == 1) {
 		int word_length = strlen(word);
 
-		// first time you hit a long word
-		if (!is_long_word) {
-			if (word_length == 45) {
-				is_long_word = true;
-			}
-		}
-
-		// middle of the long word
-		if (is_long_word && word_length == 45) {
-			continue;
-		}
-
 		// end of long word
 		if (is_long_word && word_length < 45) {
 			is_long_word = false;
@@ -68,6 +56,21 @@ int check_words(FILE* fp, hashmap_t hashtable[], char * misspelled[])
 			continue;
 		}
 
+		if (word_length == 45) {
+			// middle of the word
+			if (is_long_word) {
+				continue;
+			}
+
+			char next_char = fgetc(fp);
+			ungetc(next_char, fp);
+
+			// detect beginning of a new word
+			if (!isspace(next_char)) {
+				is_long_word = true;
+				continue;
+			}
+		}
 
 		char last_char = word[word_length - 1];
 
