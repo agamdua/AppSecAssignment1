@@ -41,8 +41,34 @@ int check_words(FILE* fp, hashmap_t hashtable[], char * misspelled[])
 	int i = 0;
 	int num_misspelled = 0;
 
-	while(fscanf(fp, " %45s", word) == 1) {
+	bool is_long_word = false;
+
+	while(fscanf(fp, "%45s", word) == 1) {
 		int word_length = strlen(word);
+
+		// first time you hit a long word
+		if (!is_long_word) {
+			if (word_length == 45) {
+				is_long_word = true;
+			}
+		}
+
+		// middle of the long word
+		if (is_long_word && word_length == 45) {
+			continue;
+		}
+
+		// end of long word
+		if (is_long_word && word_length < 45) {
+			is_long_word = false;
+			num_misspelled++;
+			misspelled[i] = (char * ) malloc(strlen(word));
+			strcpy(misspelled[i], word);
+			i++;
+			continue;
+		}
+
+
 		char last_char = word[word_length - 1];
 
 		if (ispunct(last_char)) {
@@ -60,6 +86,8 @@ int check_words(FILE* fp, hashmap_t hashtable[], char * misspelled[])
 		}
 
 	}
+
+	printf("Number of misspelled words: [%d]\n", num_misspelled);
 
 	return num_misspelled;
 }
