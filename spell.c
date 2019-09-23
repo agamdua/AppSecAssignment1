@@ -87,7 +87,7 @@ int check_words(FILE* fp, hashmap_t hashtable[], char * misspelled[])
 
 	}
 
-	printf("Number of misspelled words: [%d]\n", num_misspelled);
+	// printf("Number of misspelled words: [%d]\n", num_misspelled);
 
 	return num_misspelled;
 }
