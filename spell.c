@@ -109,6 +109,8 @@ static bool add_to_hashmap(int hash_value, char* word, hashmap_t hashtable[])
 
 	hashtable[hash_value] = new_entry;
 
+	free(new_entry);
+
 	return true;
 }
 
