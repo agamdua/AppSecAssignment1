@@ -131,6 +131,7 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
 		char* lower_case_word = (char *) malloc((strlen(word) + 1)*sizeof(char));
 
 		if (lower_case_word == NULL) {
+			fclose(fp);
 			return false;
 		}
 
@@ -143,6 +144,7 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
 		is_added = add_to_hashmap(hash_value, lower_case_word, hashtable);
 
 		if (!is_added) {
+			fclose(fp);
 			return false;
 		}
 		free(lower_case_word);
@@ -150,6 +152,5 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
 
 
 	fclose(fp);
-
 	return true;
 }
