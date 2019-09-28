@@ -52,8 +52,15 @@ Mkfile.old
 dkms.conf
 
 # Project specific
+spell
 spell_check
 test_main
+
+# Test coverage
+*.info
+.cover/
+*.gcno
+*.gcda
 
 # Vagrant specific
 *.log
