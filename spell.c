@@ -21,14 +21,17 @@ bool check_word(const char* word, hashmap_t hashtable[])
 
 	do {
 		char* word_at_location = hash_value_entry->word;
-		
+
 		if (strcasecmp(word, word_at_location) == 0) {
+			free(lower_case_word);
 			return true;
 		}
 
 		hash_value_entry = hash_value_entry->next;
 
 	} while (hash_value_entry->word);
+
+	free(lower_case_word);
 
 	return false;
 }
@@ -81,15 +84,12 @@ int check_words(FILE* fp, hashmap_t hashtable[], char * misspelled[])
 
 		if (!check_word(word, hashtable)) {
 			num_misspelled++;
-			misspelled[i] = (char * ) malloc(strlen(word));
+			misspelled[i] = malloc(strlen(word) + 1);
 			strcpy(misspelled[i], word);
 			i++;
 		}
 
 	}
-
-	// printf("Number of misspelled words: [%d]\n", num_misspelled);
-
 	return num_misspelled;
 }
 
@@ -108,8 +108,6 @@ static bool add_to_hashmap(int hash_value, char* word, hashmap_t hashtable[])
 	}
 
 	hashtable[hash_value] = new_entry;
-
-	free(new_entry);
 
 	return true;
 }
@@ -131,7 +129,6 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
 		char* lower_case_word = (char *) malloc((strlen(word) + 1)*sizeof(char));
 
 		if (lower_case_word == NULL) {
-			fclose(fp);
 			return false;
 		}
 
@@ -144,7 +141,6 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
 		is_added = add_to_hashmap(hash_value, lower_case_word, hashtable);
 
 		if (!is_added) {
-			fclose(fp);
 			return false;
 		}
 		free(lower_case_word);
@@ -152,5 +148,6 @@ bool load_dictionary(const char* dictionary_file, hashmap_t hashtable[])
 
 
 	fclose(fp);
+
 	return true;
 }
