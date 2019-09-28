@@ -1,5 +1,5 @@
 dist: bionic
-before_install: apt update
+before_install: sudo apt update
 install: make get-deps
 compiler: gcc
 script: make test
