@@ -1,0 +1,5 @@
+dist: bionic
+before_install: apt update
+install: make get-deps
+compiler: gcc
+script: test
