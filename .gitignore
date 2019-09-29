@@ -55,6 +55,7 @@ dkms.conf
 spell
 spell_check
 test_main
+screenshot_*.png
 
 # Test coverage
 *.info

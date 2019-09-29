@@ -14,6 +14,33 @@ START_TEST(test_dictionary_normal)
 }
 END_TEST
 
+START_TEST(test_check_word_with_accent)
+{
+    hashmap_t hashtable[HASH_SIZE];
+    load_dictionary(DICTIONARY, hashtable);
+    const char* accented_word = "señor";
+    ck_assert(!check_word(accented_word, hashtable));
+}
+END_TEST
+
+START_TEST(test_check_word_possessive)
+{
+    hashmap_t hashtable[HASH_SIZE];
+    load_dictionary(DICTIONARY, hashtable);
+    const char* possessive = "Ethelred's";
+    ck_assert(check_word(possessive, hashtable));
+}
+END_TEST
+
+START_TEST(test_check_word_plural)
+{
+    hashmap_t hashtable[HASH_SIZE];
+    load_dictionary(DICTIONARY, hashtable);
+    const char* plural_word = "guitars";
+    ck_assert(check_word(plural_word, hashtable));
+}
+END_TEST
+
 START_TEST(test_check_word_normal)
 {
     hashmap_t hashtable[HASH_SIZE];
@@ -79,6 +106,9 @@ check_word_suite(void)
     check_word_case = tcase_create("Core");
     tcase_add_test(check_word_case, test_dictionary_normal);
     tcase_add_test(check_word_case, test_check_word_normal);
+    tcase_add_test(check_word_case, test_check_word_with_accent);
+    tcase_add_test(check_word_case, test_check_word_plural);
+    tcase_add_test(check_word_case, test_check_word_possessive);
     tcase_add_test(check_word_case, test_check_words_normal);
     tcase_add_test(check_word_case, test_check_long_words_punctuation);
     tcase_add_test(check_word_case, test_check_words_punctuation_first_char);
