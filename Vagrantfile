@@ -9,6 +9,6 @@ Vagrant.configure("2") do |config|
 
   config.vm.provision "shell", inline: <<-SHELL
     apt-get update
-    apt-get install -y gcc afl vim valgrind build-essential check
+    apt-get install -y gcc afl vim valgrind build-essential check lcov
   SHELL
 end

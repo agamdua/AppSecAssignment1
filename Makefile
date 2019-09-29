@@ -1,3 +1,6 @@
+## Setting CC this way instead straight up calling gcc is fine on ubuntu 18.04,
+## since it symlinks to gcc.
+## The good part about this is the ability to specify the AFL compiler instead
 CC?=gcc
 
 default: prog
@@ -38,3 +41,22 @@ clean:
 
 cleanall:clean
 	rm spell_check
+
+afl:
+	CC=`which afl-gcc` $(MAKE) prog
+	afl-fuzz -i aflinput/ -o out/ -- ./spell_check '@@' wordlist.txt
+
+
+##################
+# Docker targets #
+##################
+DOCKER_RUN=docker run -it --mount src=`pwd`,target=/AppSecAssignment1,type=bind appsec1-test
+
+dbuild:
+	docker build . -t appsec1-test
+
+dtest: dbuild
+	$(DOCKER_RUN)
+
+dcover: dbuild
+	$(DOCKER_RUN) make coverage
