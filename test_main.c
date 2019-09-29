@@ -9,9 +9,8 @@ START_TEST(test_dictionary_normal)
 {
     hashmap_t hashtable[HASH_SIZE];
     ck_assert(load_dictionary(TESTDICT, hashtable));
-    // Here we can test if certain words ended up in certain buckets
-    // to ensure that our load_dictionary works as intended. I leave
-    // this as an exercise.
+    // test that the word ends up in the right bucket
+    ck_assert(hash_function("fender") == 628);
 }
 END_TEST
 
@@ -23,7 +22,18 @@ START_TEST(test_check_word_normal)
     const char* punctuation_word_2 = "pl.ace";
     ck_assert(check_word(correct_word, hashtable));
     ck_assert(!check_word(punctuation_word_2, hashtable));
-    // Test here: What if a word begins and ends with "?
+}
+END_TEST
+
+START_TEST(test_check_words_punctuation_first_char)
+{
+    hashmap_t hashtable[HASH_SIZE];
+    load_dictionary(DICTIONARY, hashtable);
+
+    char *misspelled[MAX_MISSPELLED];
+    FILE *fp = fopen("test_punctuation.txt", "r");
+    int num_misspelled = check_words(fp, hashtable, misspelled);
+    ck_assert(num_misspelled == 0);
 }
 END_TEST
 
@@ -71,6 +81,7 @@ check_word_suite(void)
     tcase_add_test(check_word_case, test_check_word_normal);
     tcase_add_test(check_word_case, test_check_words_normal);
     tcase_add_test(check_word_case, test_check_long_words_punctuation);
+    tcase_add_test(check_word_case, test_check_words_punctuation_first_char);
     suite_add_tcase(suite, check_word_case);
 
     return suite;

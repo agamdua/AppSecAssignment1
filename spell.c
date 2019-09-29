@@ -109,7 +109,7 @@ int check_words(FILE* fp, hashmap_t hashtable[], char * misspelled[])
 			// rest of the word back into the word
 			// we already know where word is, so we don't
 			// really need the return value from the call
-			memmove(word, word + 1, strlen(word) - 1);
+			memmove(word, word + 1, strlen(word));
 		}
 
 		// The moment we have all been waiting for!
